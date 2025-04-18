@@ -25,6 +25,16 @@ const templates: { id: ResumeTemplate; name: string; description: string }[] = [
     name: "Executive",
     description: "Sophisticated template for senior professionals and executives",
   },
+  {
+    id: "minimal",
+    name: "Minimal",
+    description: "Clean, simple design focusing on content without distractions",
+  },
+  {
+    id: "creative",
+    name: "Creative",
+    description: "Colorful sidebar design for creative fields and portfolios",
+  },
 ];
 
 const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
@@ -39,10 +49,10 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-auto">
         <div className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Choose a Template</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Choose a Template</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             Select a template that best fits your professional style. You can switch templates
             anytime without losing your resume content.
           </p>
@@ -52,22 +62,22 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               <div
                 key={t.id}
                 className={cn(
-                  "border rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md",
-                  template === t.id && "ring-2 ring-resume-accent"
+                  "border rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md dark:border-gray-700",
+                  template === t.id && "ring-2 ring-resume-accent dark:ring-resume-dark-accent"
                 )}
                 onClick={() => handleSelectTemplate(t.id)}
               >
-                <div className="h-40 bg-gray-100 relative">
+                <div className="h-40 bg-gray-100 dark:bg-gray-900 relative">
                   <div className={`h-full w-full ${t.id}-preview`}></div>
                   {template === t.id && (
-                    <div className="absolute top-2 right-2 bg-resume-accent text-white rounded-full p-1">
+                    <div className="absolute top-2 right-2 bg-resume-accent dark:bg-resume-dark-accent text-white rounded-full p-1">
                       <Check className="h-4 w-4" />
                     </div>
                   )}
                 </div>
-                <div className="p-3">
+                <div className="p-3 dark:text-white">
                   <h3 className="font-medium">{t.name}</h3>
-                  <p className="text-sm text-gray-500">{t.description}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t.description}</p>
                 </div>
               </div>
             ))}

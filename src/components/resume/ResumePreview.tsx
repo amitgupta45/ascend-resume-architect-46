@@ -3,6 +3,8 @@ import { useResumeStore } from "@/store/resumeStore";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import ExecutiveTemplate from "./templates/ExecutiveTemplate";
+import MinimalTemplate from "./templates/MinimalTemplate";
+import CreativeTemplate from "./templates/CreativeTemplate";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Download, RefreshCw } from "lucide-react";
@@ -62,6 +64,10 @@ const ResumePreview = () => {
         return <ModernTemplate data={data} />;
       case "executive":
         return <ExecutiveTemplate data={data} />;
+      case "minimal":
+        return <MinimalTemplate data={data} />;
+      case "creative":
+        return <CreativeTemplate data={data} />;
       default:
         return <ClassicTemplate data={data} />;
     }
@@ -70,7 +76,7 @@ const ResumePreview = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="bg-card dark:bg-gray-800 p-4 border-b border-border flex justify-between items-center">
-        <h2 className="text-lg font-medium">Resume Preview</h2>
+        <h2 className="text-lg font-medium dark:text-white">Resume Preview</h2>
         <Button
           variant="outline"
           className="flex items-center gap-2"
