@@ -1,4 +1,3 @@
-
 import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
 import { ResumeData, ResumeTemplate } from "@/store/resumeStore";
 import { formatDate } from "@/utils/formatDate";
@@ -411,144 +410,25 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
     </View>
   );
 
-  const renderClassicTemplate = () => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.name}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </Text>
-          {personalInfo.title && (
-            <Text style={styles.title}>{personalInfo.title}</Text>
-          )}
-          {renderContact()}
-        </View>
-
-        {/* Summary */}
-        {personalInfo.summary && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
-            <Text style={styles.text}>{personalInfo.summary}</Text>
+  const renderClassicTemplate = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.name}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </Text>
+            {personalInfo.title && (
+              <Text style={styles.title}>{personalInfo.title}</Text>
+            )}
+            {renderContact()}
           </View>
-        )}
 
-        {/* Work Experience */}
-        {workExperience.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Work Experience</Text>
-            {workExperience.map((job, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{job.position}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
-                  </Text>
-                </View>
-                <Text style={styles.jobSubtitle}>
-                  {job.company}
-                  {job.location && `, ${job.location}`}
-                </Text>
-                <Text style={styles.text}>{job.description}</Text>
-                {job.achievements.length > 0 && renderBullets(job.achievements)}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Education */}
-        {education.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {education.map((edu, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobSubtitle}>
-                    {edu.institution}
-                    {edu.location && `, ${edu.location}`}
-                  </Text>
-                  {edu.gpa && <Text style={styles.jobDate}>GPA: {edu.gpa}</Text>}
-                </View>
-                {edu.description && <Text style={styles.text}>{edu.description}</Text>}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            {["expert", "advanced", "intermediate", "beginner"].map((level) => {
-              const levelSkills = skills.filter((skill) => skill.level === level);
-              return levelSkills.length > 0 ? (
-                <View key={level} style={styles.skillGroup}>
-                  <Text style={styles.skillLevel}>{level.charAt(0).toUpperCase() + level.slice(1)}</Text>
-                  <View style={styles.skillsContainer}>
-                    {levelSkills.map((skill, index) => (
-                      <Text key={index} style={styles.skillBadge}>
-                        {skill.name}
-                      </Text>
-                    ))}
-                  </View>
-                </View>
-              ) : null;
-            })}
-          </View>
-        )}
-
-        {/* Custom Sections */}
-        {customSections.map((section, sectionIndex) => (
-          <View key={sectionIndex} style={styles.section}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            {section.items.map((item, itemIndex) => (
-              <View key={itemIndex} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{item.title}</Text>
-                  {(item.startDate || item.endDate) && (
-                    <Text style={styles.jobDate}>
-                      {item.startDate && formatDate(item.startDate)}
-                      {item.startDate && item.endDate && " - "}
-                      {item.endDate && formatDate(item.endDate)}
-                    </Text>
-                  )}
-                </View>
-                {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
-                {item.description && <Text style={styles.text}>{item.description}</Text>}
-                {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
-              </View>
-            ))}
-          </View>
-        ))}
-      </Page>
-    </Document>
-  );
-
-  const renderModernTemplate = () => (
-    <Document>
-      <Page size="A4" style={styles.modernPage}>
-        {/* Header */}
-        <View style={styles.modernHeader}>
-          <Text style={styles.modernName}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </Text>
-          {personalInfo.title && (
-            <Text style={styles.modernTitle}>{personalInfo.title}</Text>
-          )}
-          {renderModernContact()}
-        </View>
-
-        <View style={styles.modernContent}>
           {/* Summary */}
           {personalInfo.summary && (
             <View style={styles.section}>
-              <Text style={styles.modernSectionTitle}>About Me</Text>
+              <Text style={styles.sectionTitle}>Professional Summary</Text>
               <Text style={styles.text}>{personalInfo.summary}</Text>
             </View>
           )}
@@ -556,19 +436,19 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
           {/* Work Experience */}
           {workExperience.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.modernSectionTitle}>Experience</Text>
+              <Text style={styles.sectionTitle}>Work Experience</Text>
               {workExperience.map((job, index) => (
                 <View key={index} style={styles.entry}>
-                  <Text style={styles.jobTitle}>{job.position}</Text>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text style={styles.jobSubtitle}>
-                      {job.company}
-                      {job.location && `, ${job.location}`}
-                    </Text>
+                    <Text style={styles.jobTitle}>{job.position}</Text>
                     <Text style={styles.jobDate}>
                       {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
                     </Text>
                   </View>
+                  <Text style={styles.jobSubtitle}>
+                    {job.company}
+                    {job.location && `, ${job.location}`}
+                  </Text>
                   <Text style={styles.text}>{job.description}</Text>
                   {job.achievements.length > 0 && renderBullets(job.achievements)}
                 </View>
@@ -579,20 +459,22 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
           {/* Education */}
           {education.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.modernSectionTitle}>Education</Text>
+              <Text style={styles.sectionTitle}>Education</Text>
               {education.map((edu, index) => (
                 <View key={index} style={styles.entry}>
-                  <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
+                    <Text style={styles.jobDate}>
+                      {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
+                    </Text>
+                  </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <Text style={styles.jobSubtitle}>
                       {edu.institution}
                       {edu.location && `, ${edu.location}`}
                     </Text>
-                    <Text style={styles.jobDate}>
-                      {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
-                    </Text>
+                    {edu.gpa && <Text style={styles.jobDate}>GPA: {edu.gpa}</Text>}
                   </View>
-                  {edu.gpa && <Text style={styles.text}>GPA: {edu.gpa}</Text>}
                   {edu.description && <Text style={styles.text}>{edu.description}</Text>}
                 </View>
               ))}
@@ -602,7 +484,7 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
           {/* Skills */}
           {skills.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.modernSectionTitle}>Skills</Text>
+              <Text style={styles.sectionTitle}>Skills</Text>
               {["expert", "advanced", "intermediate", "beginner"].map((level) => {
                 const levelSkills = skills.filter((skill) => skill.level === level);
                 return levelSkills.length > 0 ? (
@@ -624,7 +506,7 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
           {/* Custom Sections */}
           {customSections.map((section, sectionIndex) => (
             <View key={sectionIndex} style={styles.section}>
-              <Text style={styles.modernSectionTitle}>{section.title}</Text>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
               {section.items.map((item, itemIndex) => (
                 <View key={itemIndex} style={styles.entry}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -643,423 +525,110 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
                 </View>
               ))}
             </View>
-          )}
-        </View>
-      </Page>
-    </Document>
-  );
+          ))}
+        </Page>
+      </Document>
+    );
+  };
 
-  const renderExecutiveTemplate = () => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.executiveHeader}>
-          <Text style={styles.executiveName}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </Text>
-          {personalInfo.title && (
-            <Text style={styles.executiveTitle}>{personalInfo.title}</Text>
-          )}
-          {renderExecutiveContact()}
-        </View>
-
-        {/* Summary */}
-        {personalInfo.summary && (
-          <View style={styles.section}>
-            <Text style={styles.executiveSectionTitle}>Executive Summary</Text>
-            <Text style={styles.text}>{personalInfo.summary}</Text>
-          </View>
-        )}
-
-        {/* Work Experience */}
-        {workExperience.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.executiveSectionTitle}>Professional Experience</Text>
-            {workExperience.map((job, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{job.position}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
-                  </Text>
-                </View>
-                <Text style={styles.jobSubtitle}>
-                  {job.company}
-                  {job.location && `, ${job.location}`}
-                </Text>
-                <Text style={styles.text}>{job.description}</Text>
-                {job.achievements.length > 0 && (
-                  <>
-                    <Text style={{ ...styles.text, fontWeight: "medium" }}>Key Achievements:</Text>
-                    {renderBullets(job.achievements)}
-                  </>
-                )}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.executiveSectionTitle}>Core Competencies</Text>
-            <View style={styles.skillsContainer}>
-              {skills.map((skill, index) => (
-                <Text key={index} style={{ ...styles.skillBadge, margin: 4 }}>
-                  {skill.name}
-                </Text>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Education */}
-        {education.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.executiveSectionTitle}>Education</Text>
-            {education.map((edu, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
-                  </Text>
-                </View>
-                <Text style={styles.jobSubtitle}>
-                  {edu.institution}
-                  {edu.location && `, ${edu.location}`}
-                </Text>
-                {edu.gpa && <Text style={styles.text}>GPA: {edu.gpa}</Text>}
-                {edu.description && <Text style={styles.text}>{edu.description}</Text>}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Custom Sections */}
-        {customSections.map((section, sectionIndex) => (
-          <View key={sectionIndex} style={styles.section}>
-            <Text style={styles.executiveSectionTitle}>{section.title}</Text>
-            {section.items.map((item, itemIndex) => (
-              <View key={itemIndex} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{item.title}</Text>
-                  {(item.startDate || item.endDate) && (
-                    <Text style={styles.jobDate}>
-                      {item.startDate && formatDate(item.startDate)}
-                      {item.startDate && item.endDate && " - "}
-                      {item.endDate && formatDate(item.endDate)}
-                    </Text>
-                  )}
-                </View>
-                {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
-                {item.description && <Text style={styles.text}>{item.description}</Text>}
-                {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
-              </View>
-            ))}
-          </View>
-        )}
-      </Page>
-    </Document>
-  );
-  
-  const renderMinimalTemplate = () => (
-    <Document>
-      <Page size="A4" style={styles.minimalPage}>
-        {/* Header */}
-        <View style={{ marginBottom: 20 }}>
-          <Text style={styles.minimalName}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </Text>
-          {personalInfo.title && (
-            <Text style={styles.minimalTitle}>{personalInfo.title}</Text>
-          )}
-        </View>
-        
-        {/* Contact Info */}
-        <View style={styles.minimalContactInfo}>
-          {personalInfo.email && (
-            <Text style={styles.contactItem}>
-              Email: {personalInfo.email}
+  const renderModernTemplate = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles.modernPage}>
+          {/* Header */}
+          <View style={styles.modernHeader}>
+            <Text style={styles.modernName}>
+              {personalInfo.firstName} {personalInfo.lastName}
             </Text>
-          )}
-          {personalInfo.phone && (
-            <Text style={styles.contactItem}>
-              Phone: {personalInfo.phone}
-            </Text>
-          )}
-          {(personalInfo.city || personalInfo.state) && (
-            <Text style={styles.contactItem}>
-              Location: {personalInfo.city}
-              {personalInfo.city && personalInfo.state && ", "}
-              {personalInfo.state}
-            </Text>
-          )}
-          {personalInfo.linkedin && (
-            <Text style={styles.contactItem}>
-              LinkedIn: {personalInfo.linkedin}
-            </Text>
-          )}
-          {personalInfo.website && (
-            <Text style={styles.contactItem}>
-              Website: {personalInfo.website}
-            </Text>
-          )}
-        </View>
-
-        {/* Summary */}
-        {personalInfo.summary && (
-          <View style={styles.section}>
-            <Text style={styles.text}>{personalInfo.summary}</Text>
-          </View>
-        )}
-
-        {/* Work Experience */}
-        {workExperience.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.minimalSectionTitle}>Experience</Text>
-            {workExperience.map((job, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{job.position}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
-                  </Text>
-                </View>
-                <Text style={styles.jobSubtitle}>
-                  {job.company}
-                  {job.location && `, ${job.location}`}
-                </Text>
-                <Text style={styles.text}>{job.description}</Text>
-                {job.achievements.length > 0 && renderBullets(job.achievements)}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Education */}
-        {education.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.minimalSectionTitle}>Education</Text>
-            {education.map((edu, index) => (
-              <View key={index} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
-                  <Text style={styles.jobDate}>
-                    {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobSubtitle}>
-                    {edu.institution}
-                    {edu.location && `, ${edu.location}`}
-                  </Text>
-                  {edu.gpa && <Text style={styles.jobDate}>GPA: {edu.gpa}</Text>}
-                </View>
-                {edu.description && <Text style={styles.text}>{edu.description}</Text>}
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Skills */}
-        {skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.minimalSectionTitle}>Skills</Text>
-            <View style={styles.skillsContainer}>
-              {skills.map((skill, index) => (
-                <Text key={index} style={styles.skillBadge}>
-                  {skill.name}
-                </Text>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Custom Sections */}
-        {customSections.map((section, sectionIndex) => (
-          <View key={sectionIndex} style={styles.section}>
-            <Text style={styles.minimalSectionTitle}>{section.title}</Text>
-            {section.items.map((item, itemIndex) => (
-              <View key={itemIndex} style={styles.entry}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <Text style={styles.jobTitle}>{item.title}</Text>
-                  {(item.startDate || item.endDate) && (
-                    <Text style={styles.jobDate}>
-                      {item.startDate && formatDate(item.startDate)}
-                      {item.startDate && item.endDate && " - "}
-                      {item.endDate && formatDate(item.endDate)}
-                    </Text>
-                  )}
-                </View>
-                {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
-                {item.description && <Text style={styles.text}>{item.description}</Text>}
-                {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
-              </View>
-            ))}
-          </View>
-        )}
-      </Page>
-    </Document>
-  );
-
-  const renderCreativeTemplate = () => (
-    <Document>
-      <Page size="A4" style={styles.creativePage}>
-        {/* Sidebar */}
-        <View style={styles.creativeSidebar}>
-          {/* Profile Image */}
-          <View style={styles.creativeProfileImage}>
-            <Text style={styles.creativeInitials}>
-              {personalInfo.firstName && personalInfo.firstName[0]}
-              {personalInfo.lastName && personalInfo.lastName[0]}
-            </Text>
-          </View>
-          
-          <Text style={styles.creativeContactTitle}>Contact</Text>
-          <View style={{ marginBottom: 20 }}>
-            {personalInfo.email && (
-              <Text style={{ fontSize: 9, marginBottom: 4 }}>
-                Email: {personalInfo.email}
-              </Text>
+            {personalInfo.title && (
+              <Text style={styles.modernTitle}>{personalInfo.title}</Text>
             )}
-            {personalInfo.phone && (
-              <Text style={{ fontSize: 9, marginBottom: 4 }}>
-                Phone: {personalInfo.phone}
-              </Text>
-            )}
-            {(personalInfo.city || personalInfo.state) && (
-              <Text style={{ fontSize: 9, marginBottom: 4 }}>
-                Location: {personalInfo.city}
-                {personalInfo.city && personalInfo.state && ", "}
-                {personalInfo.state}
-              </Text>
-            )}
-            {personalInfo.linkedin && (
-              <Text style={{ fontSize: 9, marginBottom: 4 }}>
-                LinkedIn: {personalInfo.linkedin}
-              </Text>
-            )}
-            {personalInfo.website && (
-              <Text style={{ fontSize: 9, marginBottom: 4 }}>
-                Website: {personalInfo.website}
-              </Text>
-            )}
+            {renderModernContact()}
           </View>
-          
-          {/* Skills */}
-          {skills.length > 0 && (
-            <View>
-              <Text style={styles.creativeContactTitle}>Skills</Text>
-              <View style={{ marginBottom: 20 }}>
-                {["expert", "advanced", "intermediate", "beginner"].map((level) => {
-                  const levelSkills = skills.filter((skill) => skill.level === level);
-                  return levelSkills.length > 0 ? (
-                    <View key={level} style={{ marginBottom: 10 }}>
-                      <Text style={{ fontSize: 10, fontWeight: "medium", marginBottom: 3 }}>
-                        {level.charAt(0).toUpperCase() + level.slice(1)}
-                      </Text>
-                      {levelSkills.map((skill, index) => (
-                        <View key={index} style={{ marginBottom: 3 }}>
-                          <Text style={{ fontSize: 9 }}>{skill.name}</Text>
-                          <View style={{ height: 3, backgroundColor: "white", opacity: 0.3, marginTop: 2, borderRadius: 2 }}>
-                            <View 
-                              style={{ 
-                                height: "100%", 
-                                width: skill.level === 'beginner' ? '25%' : 
-                                       skill.level === 'intermediate' ? '50%' : 
-                                       skill.level === 'advanced' ? '75%' : '100%',
-                                backgroundColor: "white",
-                                borderRadius: 2
-                              }} 
-                            />
-                          </View>
-                        </View>
-                      ))}
-                    </View>
-                  ) : null;
-                })}
+
+          <View style={styles.modernContent}>
+            {/* Summary */}
+            {personalInfo.summary && (
+              <View style={styles.section}>
+                <Text style={styles.modernSectionTitle}>About Me</Text>
+                <Text style={styles.text}>{personalInfo.summary}</Text>
               </View>
-            </View>
-          )}
-        </View>
+            )}
 
-        {/* Main Content */}
-        <View style={styles.creativeMain}>
-          <Text style={styles.creativeName}>
-            {personalInfo.firstName} {personalInfo.lastName}
-          </Text>
-          {personalInfo.title && (
-            <Text style={styles.creativeTitle}>{personalInfo.title}</Text>
-          )}
-          
-          {/* Summary */}
-          {personalInfo.summary && (
-            <View style={{ marginBottom: 15 }}>
-              <Text style={styles.creativeSectionTitle}>Profile</Text>
-              <Text style={styles.text}>{personalInfo.summary}</Text>
-            </View>
-          )}
-
-          {/* Work Experience */}
-          {workExperience.length > 0 && (
-            <View style={{ marginBottom: 15 }}>
-              <Text style={styles.creativeSectionTitle}>Experience</Text>
-              <View style={styles.creativeTimeline}>
+            {/* Work Experience */}
+            {workExperience.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.modernSectionTitle}>Experience</Text>
                 {workExperience.map((job, index) => (
-                  <View key={index} style={{ marginBottom: 10, position: "relative" }}>
+                  <View key={index} style={styles.entry}>
+                    <Text style={styles.jobTitle}>{job.position}</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <Text style={styles.jobTitle}>{job.position}</Text>
+                      <Text style={styles.jobSubtitle}>
+                        {job.company}
+                        {job.location && `, ${job.location}`}
+                      </Text>
                       <Text style={styles.jobDate}>
                         {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
                       </Text>
                     </View>
-                    <Text style={{ ...styles.jobSubtitle, color: "#f59e0b" }}>
-                      {job.company}
-                      {job.location && `, ${job.location}`}
-                    </Text>
                     <Text style={styles.text}>{job.description}</Text>
                     {job.achievements.length > 0 && renderBullets(job.achievements)}
                   </View>
                 ))}
               </View>
-            </View>
-          )}
+            )}
 
-          {/* Education */}
-          {education.length > 0 && (
-            <View style={{ marginBottom: 15 }}>
-              <Text style={styles.creativeSectionTitle}>Education</Text>
-              <View style={styles.creativeTimeline}>
+            {/* Education */}
+            {education.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.modernSectionTitle}>Education</Text>
                 {education.map((edu, index) => (
-                  <View key={index} style={{ marginBottom: 10 }}>
+                  <View key={index} style={styles.entry}>
+                    <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
+                      <Text style={styles.jobSubtitle}>
+                        {edu.institution}
+                        {edu.location && `, ${edu.location}`}
+                      </Text>
                       <Text style={styles.jobDate}>
                         {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
                       </Text>
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <Text style={{ ...styles.jobSubtitle, color: "#f59e0b" }}>
-                        {edu.institution}
-                        {edu.location && `, ${edu.location}`}
-                      </Text>
-                      {edu.gpa && <Text style={styles.jobDate}>GPA: {edu.gpa}</Text>}
-                    </View>
+                    {edu.gpa && <Text style={styles.text}>GPA: {edu.gpa}</Text>}
                     {edu.description && <Text style={styles.text}>{edu.description}</Text>}
                   </View>
                 ))}
               </View>
-            </View>
-          )}
+            )}
 
-          {/* Custom Sections */}
-          {customSections.map((section, sectionIndex) => (
-            <View key={sectionIndex} style={{ marginBottom: 15 }}>
-              <Text style={styles.creativeSectionTitle}>{section.title}</Text>
-              <View style={styles.creativeTimeline}>
+            {/* Skills */}
+            {skills.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.modernSectionTitle}>Skills</Text>
+                {["expert", "advanced", "intermediate", "beginner"].map((level) => {
+                  const levelSkills = skills.filter((skill) => skill.level === level);
+                  return levelSkills.length > 0 ? (
+                    <View key={level} style={styles.skillGroup}>
+                      <Text style={styles.skillLevel}>{level.charAt(0).toUpperCase() + level.slice(1)}</Text>
+                      <View style={styles.skillsContainer}>
+                        {levelSkills.map((skill, index) => (
+                          <Text key={index} style={styles.skillBadge}>
+                            {skill.name}
+                          </Text>
+                        ))}
+                      </View>
+                    </View>
+                  ) : null;
+                })}
+              </View>
+            )}
+
+            {/* Custom Sections */}
+            {customSections.map((section, sectionIndex) => (
+              <View key={sectionIndex} style={styles.section}>
+                <Text style={styles.modernSectionTitle}>{section.title}</Text>
                 {section.items.map((item, itemIndex) => (
-                  <View key={itemIndex} style={{ marginBottom: 10 }}>
+                  <View key={itemIndex} style={styles.entry}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                       <Text style={styles.jobTitle}>{item.title}</Text>
                       {(item.startDate || item.endDate) && (
@@ -1070,32 +639,278 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
                         </Text>
                       )}
                     </View>
-                    {item.subtitle && <Text style={{ ...styles.jobSubtitle, color: "#f59e0b" }}>{item.subtitle}</Text>}
+                    {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
                     {item.description && <Text style={styles.text}>{item.description}</Text>}
                     {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
                   </View>
                 ))}
               </View>
+            ))}
+          </View>
+        </Page>
+      </Document>
+    );
+  };
+
+  const renderExecutiveTemplate = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          {/* Header */}
+          <View style={styles.executiveHeader}>
+            <Text style={styles.executiveName}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </Text>
+            {personalInfo.title && (
+              <Text style={styles.executiveTitle}>{personalInfo.title}</Text>
+            )}
+            {renderExecutiveContact()}
+          </View>
+
+          {/* Summary */}
+          {personalInfo.summary && (
+            <View style={styles.section}>
+              <Text style={styles.executiveSectionTitle}>Executive Summary</Text>
+              <Text style={styles.text}>{personalInfo.summary}</Text>
+            </View>
+          )}
+
+          {/* Work Experience */}
+          {workExperience.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.executiveSectionTitle}>Professional Experience</Text>
+              {workExperience.map((job, index) => (
+                <View key={index} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{job.position}</Text>
+                    <Text style={styles.jobDate}>
+                      {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
+                    </Text>
+                  </View>
+                  <Text style={styles.jobSubtitle}>
+                    {job.company}
+                    {job.location && `, ${job.location}`}
+                  </Text>
+                  <Text style={styles.text}>{job.description}</Text>
+                  {job.achievements.length > 0 && (
+                    <>
+                      <Text style={{ ...styles.text, fontWeight: "medium" }}>Key Achievements:</Text>
+                      {renderBullets(job.achievements)}
+                    </>
+                  )}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Skills */}
+          {skills.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.executiveSectionTitle}>Core Competencies</Text>
+              <View style={styles.skillsContainer}>
+                {skills.map((skill, index) => (
+                  <Text key={index} style={{ ...styles.skillBadge, margin: 4 }}>
+                    {skill.name}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* Education */}
+          {education.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.executiveSectionTitle}>Education</Text>
+              {education.map((edu, index) => (
+                <View key={index} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
+                    <Text style={styles.jobDate}>
+                      {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
+                    </Text>
+                  </View>
+                  <Text style={styles.jobSubtitle}>
+                    {edu.institution}
+                    {edu.location && `, ${edu.location}`}
+                  </Text>
+                  {edu.gpa && <Text style={styles.text}>GPA: {edu.gpa}</Text>}
+                  {edu.description && <Text style={styles.text}>{edu.description}</Text>}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Custom Sections */}
+          {customSections.map((section, sectionIndex) => (
+            <View key={sectionIndex} style={styles.section}>
+              <Text style={styles.executiveSectionTitle}>{section.title}</Text>
+              {section.items.map((item, itemIndex) => (
+                <View key={itemIndex} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{item.title}</Text>
+                    {(item.startDate || item.endDate) && (
+                      <Text style={styles.jobDate}>
+                        {item.startDate && formatDate(item.startDate)}
+                        {item.startDate && item.endDate && " - "}
+                        {item.endDate && formatDate(item.endDate)}
+                      </Text>
+                    )}
+                  </View>
+                  {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
+                  {item.description && <Text style={styles.text}>{item.description}</Text>}
+                  {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
+                </View>
+              ))}
             </View>
           ))}
-        </View>
-      </Page>
-    </Document>
-  );
+        </Page>
+      </Document>
+    );
+  };
+  
+  const renderMinimalTemplate = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles.minimalPage}>
+          {/* Header */}
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.minimalName}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </Text>
+            {personalInfo.title && (
+              <Text style={styles.minimalTitle}>{personalInfo.title}</Text>
+            )}
+          </View>
+          
+          {/* Contact Info */}
+          <View style={styles.minimalContactInfo}>
+            {personalInfo.email && (
+              <Text style={styles.contactItem}>
+                Email: {personalInfo.email}
+              </Text>
+            )}
+            {personalInfo.phone && (
+              <Text style={styles.contactItem}>
+                Phone: {personalInfo.phone}
+              </Text>
+            )}
+            {(personalInfo.city || personalInfo.state) && (
+              <Text style={styles.contactItem}>
+                Location: {personalInfo.city}
+                {personalInfo.city && personalInfo.state && ", "}
+                {personalInfo.state}
+              </Text>
+            )}
+            {personalInfo.linkedin && (
+              <Text style={styles.contactItem}>
+                LinkedIn: {personalInfo.linkedin}
+              </Text>
+            )}
+            {personalInfo.website && (
+              <Text style={styles.contactItem}>
+                Website: {personalInfo.website}
+              </Text>
+            )}
+          </View>
 
-  switch (template) {
-    case "classic":
-      return renderClassicTemplate();
-    case "modern":
-      return renderModernTemplate();
-    case "executive":
-      return renderExecutiveTemplate();
-    case "minimal":
-      return renderMinimalTemplate();
-    case "creative":
-      return renderCreativeTemplate();
-    default:
-      return renderClassicTemplate();
-  }
-};
+          {/* Summary */}
+          {personalInfo.summary && (
+            <View style={styles.section}>
+              <Text style={styles.text}>{personalInfo.summary}</Text>
+            </View>
+          )}
 
+          {/* Work Experience */}
+          {workExperience.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.minimalSectionTitle}>Experience</Text>
+              {workExperience.map((job, index) => (
+                <View key={index} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{job.position}</Text>
+                    <Text style={styles.jobDate}>
+                      {formatDate(job.startDate)} - {job.current ? "Present" : formatDate(job.endDate)}
+                    </Text>
+                  </View>
+                  <Text style={styles.jobSubtitle}>
+                    {job.company}
+                    {job.location && `, ${job.location}`}
+                  </Text>
+                  <Text style={styles.text}>{job.description}</Text>
+                  {job.achievements.length > 0 && renderBullets(job.achievements)}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Education */}
+          {education.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.minimalSectionTitle}>Education</Text>
+              {education.map((edu, index) => (
+                <View key={index} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{edu.degree} in {edu.field}</Text>
+                    <Text style={styles.jobDate}>
+                      {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate)}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobSubtitle}>
+                      {edu.institution}
+                      {edu.location && `, ${edu.location}`}
+                    </Text>
+                    {edu.gpa && <Text style={styles.jobDate}>GPA: {edu.gpa}</Text>}
+                  </View>
+                  {edu.description && <Text style={styles.text}>{edu.description}</Text>}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Skills */}
+          {skills.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.minimalSectionTitle}>Skills</Text>
+              <View style={styles.skillsContainer}>
+                {skills.map((skill, index) => (
+                  <Text key={index} style={styles.skillBadge}>
+                    {skill.name}
+                  </Text>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* Custom Sections */}
+          {customSections.map((section, sectionIndex) => (
+            <View key={sectionIndex} style={styles.section}>
+              <Text style={styles.minimalSectionTitle}>{section.title}</Text>
+              {section.items.map((item, itemIndex) => (
+                <View key={itemIndex} style={styles.entry}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={styles.jobTitle}>{item.title}</Text>
+                    {(item.startDate || item.endDate) && (
+                      <Text style={styles.jobDate}>
+                        {item.startDate && formatDate(item.startDate)}
+                        {item.startDate && item.endDate && " - "}
+                        {item.endDate && formatDate(item.endDate)}
+                      </Text>
+                    )}
+                  </View>
+                  {item.subtitle && <Text style={styles.jobSubtitle}>{item.subtitle}</Text>}
+                  {item.description && <Text style={styles.text}>{item.description}</Text>}
+                  {item.bulletPoints && item.bulletPoints.length > 0 && renderBullets(item.bulletPoints)}
+                </View>
+              ))}
+            </View>
+          ))}
+        </Page>
+      </Document>
+    );
+  };
+
+  const renderCreativeTemplate = () => {
+    return (
+      <Document>
+        <Page size="A4" style={styles
