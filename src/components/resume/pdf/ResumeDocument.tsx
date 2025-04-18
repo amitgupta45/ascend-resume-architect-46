@@ -758,7 +758,7 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
               </View>
             ))}
           </View>
-        ))}
+        )}
       </Page>
     </Document>
   );
@@ -898,7 +898,7 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
               </View>
             ))}
           </View>
-        ))}
+        )}
       </Page>
     </Document>
   );
@@ -911,7 +911,8 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
           {/* Profile Image */}
           <View style={styles.creativeProfileImage}>
             <Text style={styles.creativeInitials}>
-              {personalInfo.firstName[0]}{personalInfo.lastName[0]}
+              {personalInfo.firstName && personalInfo.firstName[0]}
+              {personalInfo.lastName && personalInfo.lastName[0]}
             </Text>
           </View>
           
@@ -1097,3 +1098,4 @@ export const ResumeDocument = ({ template, data }: ResumeDocumentProps) => {
       return renderClassicTemplate();
   }
 };
+

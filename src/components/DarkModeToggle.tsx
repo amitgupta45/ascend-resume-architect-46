@@ -23,6 +23,9 @@ const DarkModeToggle = () => {
       setIsDark(systemPrefersDark);
       if (systemPrefersDark) {
         document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        localStorage.setItem("theme", "light");
       }
     }
   }, []);
@@ -44,6 +47,7 @@ const DarkModeToggle = () => {
       size="icon" 
       onClick={toggleDarkMode}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="text-white border-white hover:bg-white/10"
     >
       {isDark ? (
         <Sun className="h-5 w-5" />
